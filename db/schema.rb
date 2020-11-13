@@ -16,14 +16,14 @@ ActiveRecord::Schema.define(version: 2020_11_13_023208) do
   enable_extension "plpgsql"
 
   create_table "group_events", force: :cascade do |t|
-    t.datetime "start"
-    t.datetime "end"
+    t.datetime "start_date"
+    t.datetime "end_date"
     t.integer "duration"
     t.string "name"
     t.text "description"
     t.string "location"
-    t.boolean "status", default: true
-    t.boolean "is_deleted"
+    t.string "status", default: "DRAFT"
+    t.boolean "is_deleted", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
