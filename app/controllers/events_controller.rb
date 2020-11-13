@@ -4,7 +4,7 @@ class EventsController < ApplicationController
   # GET /events
   # GET /events.json
   def index
-    @events = Event.all
+    @events = GroupEvent.not_deleted
   end
 
   # GET /events/1
@@ -15,10 +15,12 @@ class EventsController < ApplicationController
   # POST /events
   # POST /events.json
   def create
-    @event = Event.new(event_params)
-
+    @event = GroupEvent.new(event_params)
+    if @event.valid?
+      @event.calculate_date_fields
+    end
     if @event.save
-      render :show, status: :created, location: @event
+      render :show, status: :created
     else
       render json: @event.errors, status: :unprocessable_entity
     end
@@ -28,7 +30,7 @@ class EventsController < ApplicationController
   # PATCH/PUT /events/1.json
   def update
     if @event.update(event_params)
-      render :show, status: :ok, location: @event
+      render :show, status: :ok
     else
       render json: @event.errors, status: :unprocessable_entity
     end
@@ -43,11 +45,11 @@ class EventsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_event
-      @event = Event.find(params[:id])
+      @event = GroupEvent.not_deleted.find(params.require(:id))
     end
 
     # Only allow a list of trusted parameters through.
     def event_params
-      params.require(:event).permit(:start_date, :end_date, :duration, :name, :description, :location)
+      params.require(:group_event).permit(:start_date, :end_date, :duration, :name, :description, :location)
     end
 end

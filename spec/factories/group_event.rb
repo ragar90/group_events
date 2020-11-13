@@ -9,5 +9,9 @@ FactoryBot.define do
       end_date { Time.now + 1.day}
       duration {1}
     end
+    trait :deleted do
+      is_deleted { true }
+      deleted_at { 2.hours.ago}
+    end
   end
 end

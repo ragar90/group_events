@@ -7,6 +7,9 @@ class GroupEvent < ApplicationRecord
     published: "published",
     draft: "draft"
   }
+  scope :deleted, -> { where(is_deleted: true)}
+  scope :not_deleted, -> { where(is_deleted: false)}
+  # Ex:- scope :active, -> {where(:active => true)}
 
   def calculate_date_fields
     if self.has_all_date_fields?
@@ -35,6 +38,26 @@ class GroupEvent < ApplicationRecord
       end
     end
     callbacks_result ? self : false
+  end
+
+  def formatted_start_date
+    self.start_date.strftime("%Y-%m-%dT%H:%M:%S%z")
+  end
+
+  def formatted_end_date
+    self.start_date.strftime("%Y-%m-%dT%H:%M:%S%z")
+  end
+
+  def formatted_created_at
+    self.start_date.strftime("%Y-%m-%dT%H:%M:%S%z")
+  end
+
+  def formatted_updated_at
+    self.start_date.strftime("%Y-%m-%dT%H:%M:%S%z")
+  end
+
+  def formatted_deleted_at
+    self.start_date.strftime("%Y-%m-%dT%H:%M:%S%z")
   end
 
 
