@@ -22,8 +22,9 @@ ActiveRecord::Schema.define(version: 2020_11_13_023208) do
     t.string "name"
     t.text "description"
     t.string "location"
-    t.string "status", default: "DRAFT"
+    t.string "status", default: "draft"
     t.boolean "is_deleted", default: false
+    t.datetime "deleted_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

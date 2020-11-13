@@ -24,6 +24,19 @@ class GroupEvent < ApplicationRecord
     self.start_date.present? and self.end_date.present? and self.duration.present?
   end
 
+  def delete
+    update_columns(is_deleted: true, deleted_at: Time.now)
+  end
+
+  def destroy
+    callbacks_result = transaction do
+      run_callbacks(:destroy) do
+        delete
+      end
+    end
+    callbacks_result ? self : false
+  end
+
 
   private
 
@@ -37,7 +50,7 @@ class GroupEvent < ApplicationRecord
     end
 
     def calculate_start_date
-      self.status = self.end_date -  duration.days
+      self.start_date = self.end_date -  duration.days
     end
 
     def date_fields_match
@@ -59,7 +72,7 @@ class GroupEvent < ApplicationRecord
 
     def can_be_published?
       all_fields_present = GroupEvent.column_names.map(&:to_sym)
-        .delete_if{|f| [:id, :created_at, :updated_at].include?(f) }
+        .delete_if{|f| [:id, :created_at, :updated_at, :deleted_at].include?(f) }
         .map{ |field| !self.send(field).nil? }
         .reduce{ |field, value| value && field }
       if all_fields_present and self.published?

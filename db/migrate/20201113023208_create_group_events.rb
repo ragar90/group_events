@@ -9,6 +9,7 @@ class CreateGroupEvents < ActiveRecord::Migration[6.0]
       t.string :location
       t.string :status, default: GroupEvent.statuses[:draft]
       t.boolean :is_deleted, default: false
+      t.datetime :deleted_at
 
       t.timestamps
     end
