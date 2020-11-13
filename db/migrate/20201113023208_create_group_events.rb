@@ -7,8 +7,7 @@ class CreateGroupEvents < ActiveRecord::Migration[6.0]
       t.string :name
       t.text :description
       t.string :location
-      t.boolean :is_draft
-      t.string :is_publish_boolean
+      t.boolean :status, default: GroupEvent.statuses[:draft]
       t.boolean :is_deleted
 
       t.timestamps
